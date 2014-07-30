@@ -1,1 +1,1 @@
-console.log('\'Allo \'Allo!');
+var file = document.getElementById('input-file').files[0];
