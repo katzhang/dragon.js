@@ -1,1 +1,3 @@
-var file = document.getElementById('input-file').files[0];
+var dropbox = document.getElementById('dropbox');
+
+var dragon = new Dragon(dropbox);
