@@ -4,13 +4,15 @@ function Dragon(layer, options) {
 
 	this.layer = layer;
 
+	this.dataFiles = [];
+
 	this.autoSorted = options.autoSorted || true;
 
 	this.showThumbnail = options.showThumbnail || true;
 
-	layer.addEventListener('dragenter', this.dragenterHandler, false);
-	layer.addEventListener('dragover', this.dragoverHandler, false);
-	layer.addEventListener('drop', this.dropHandler, false);
+	layer.addEventListener('dragenter', this.dragenterHandler.bind(this), false);
+	layer.addEventListener('dragover', this.dragoverHandler.bind(this), false);
+	layer.addEventListener('drop', this.dropHandler.bind(this), false);
 
 }
 
@@ -28,7 +30,24 @@ Dragon.prototype.dropHandler = function(e) {
   e.stopPropagation();
   e.preventDefault();
 
-  var dt = e.dataTransfer;
-  var files = dt.files;
-  console.log(files);
+	// e.dataTransfer.items[0].getAsString(function(url){
+ //        alert(url);
+ //  });
+	var html = e.dataTransfer.getData('text/html');
+	this.addDataFile(html);
+}
+
+Dragon.prototype.addDataFile = function(file) {
+	var megaTag,
+			tagName,
+			dataFile = {};
+
+	megaTag = file.match(/^<meta.*></)[0];
+	file = file.slice(megaTag.length);
+	tagName = file.slice(0, file.search(/\s/));
+
+
+	console.log(tagName);
+	this.dataFiles.push(file);
+	console.log(this.dataFiles);
 }
