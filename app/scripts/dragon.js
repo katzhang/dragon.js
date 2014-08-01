@@ -40,14 +40,19 @@ Dragon.prototype.dropHandler = function(e) {
 Dragon.prototype.addDataFile = function(file) {
 	var megaTag,
 			tagName,
-			dataFile = {};
+			dataFile = {
+				tagName: null,
+				link: null,
+				content: null
+			};
 
+
+	//Extract the tag name from returned data
 	megaTag = file.match(/^<meta.*></)[0];
 	file = file.slice(megaTag.length);
 	tagName = file.slice(0, file.search(/\s/));
 
+	dataFile.tagName = tagName;
 
-	console.log(tagName);
-	this.dataFiles.push(file);
-	console.log(this.dataFiles);
+	console.log(dataFile);
 }
