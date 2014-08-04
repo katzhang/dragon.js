@@ -37,8 +37,10 @@ Dragon.prototype.dropHandler = function(e) {
 	this.addDataFile(html);
 }
 
-Dragon.prototype.addDataFile = function(file) {
-	var megaTag,
+Dragon.prototype.addDataFile = function(html) {
+	var fragment,
+			node,
+			megaTag,
 			tagName,
 			dataFile = {
 				tagName: null,
@@ -48,26 +50,32 @@ Dragon.prototype.addDataFile = function(file) {
 
 
 	//Extract the tag name from returned data
-	megaTag = file.match(/^<meta.*></)[0];
-	file = file.slice(megaTag.length);
-	tagName = file.slice(0, file.search(/\s/));
+	megaTag = html.match(/^<meta.*></)[0];
+	html = html.slice(megaTag.length - 1);
+	tagName = html.slice(1, html.search(/\s/));
 
 	dataFile.tagName = tagName;
 
-	switch(tagName) {
-		case 'img':
-			dataFile.link = file.match(/src="[^"]*"/)[0].match(/".*"/)[0];
-			break;
-		case 'a':
-			dataFile.link = file.match(/href="[^"]*"/)[0].match(/".*"/)[0];
-			break;
-		case 'span':
-			dataFile.content = file.slice((file.search(/>(?!$)/) + 1), file.search(/<\/span>/));
-			break;
-		case 'p':
-			dataFile.content = file.slice((file.search(/>(?!$)/) + 1), file.search(/<\/p>/));
-			break;
-	}
+	// switch(tagName) {
+	// 	case 'img':
+	// 		dataFile.link = file.match(/src="[^"]*"/)[0].match(/".*"/)[0];
+	// 		break;
+	// 	case 'a':
+	// 		dataFile.link = file.match(/href="[^"]*"/)[0].match(/".*"/)[0];
+	// 		break;
+	// 	case 'span':
+	// 		dataFile.content = file.slice((file.search(/>(?!$)/) + 1), file.search(/<\/span>/));
+	// 		break;
+	// 	case 'p':
+	// 		dataFile.content = file.slice((file.search(/>(?!$)/) + 1), file.search(/<\/p>/));
+	// 		break;
+	// }
+	node = document.createElement(tagName);
+	node.innerHTML = html;
 
-	console.log(dataFile);
+	fragment = document.createDocumentFragment();
+	fragment.appendChild(node);
+	console.log(node);
+	console.log(fragment);
+	console.log(html);
 }
