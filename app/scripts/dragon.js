@@ -38,8 +38,8 @@ Dragon.prototype.dropHandler = function(e) {
 }
 
 Dragon.prototype.addDataFile = function(html) {
-	var fragment,
-			node,
+	var wrapper,
+			element,
 			megaTag,
 			tagName,
 			dataFile = {
@@ -56,26 +56,29 @@ Dragon.prototype.addDataFile = function(html) {
 
 	dataFile.tagName = tagName;
 
-	// switch(tagName) {
-	// 	case 'img':
-	// 		dataFile.link = file.match(/src="[^"]*"/)[0].match(/".*"/)[0];
-	// 		break;
-	// 	case 'a':
-	// 		dataFile.link = file.match(/href="[^"]*"/)[0].match(/".*"/)[0];
-	// 		break;
-	// 	case 'span':
-	// 		dataFile.content = file.slice((file.search(/>(?!$)/) + 1), file.search(/<\/span>/));
-	// 		break;
-	// 	case 'p':
-	// 		dataFile.content = file.slice((file.search(/>(?!$)/) + 1), file.search(/<\/p>/));
-	// 		break;
-	// }
-	node = document.createElement(tagName);
-	node.innerHTML = html;
+	wrapper = document.createElement('div');
+	wrapper.innerHTML = html;
+	element = wrapper.firstChild;
 
-	fragment = document.createDocumentFragment();
-	fragment.appendChild(node);
-	console.log(node);
-	console.log(fragment);
-	console.log(html);
+	// fragment = document.createDocumentFragment();
+	// fragment.appendChild(node);
+
+	// console.log(fragment);
+
+	switch(tagName) {
+		case 'img':
+			dataFile.link = element.getAttribute('src');
+			console.log(element.getAttribute('src'));
+			break;
+		case 'a':
+			dataFile.link = element.getAttribute('href');
+			break;
+		case 'span':
+		case 'p':
+			dataFile.content = element.textContent;
+			break;
+
+	}
+
+	console.log(dataFile);
 }
