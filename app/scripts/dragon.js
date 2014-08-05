@@ -17,6 +17,7 @@ function Dragon(layer, options) {
 }
 
 Dragon.prototype.dragenterHandler = function(e) {
+	this.layer.classList.add('dotted');
 	e.stopPropagation();
 	e.preventDefault();
 }
@@ -29,6 +30,7 @@ Dragon.prototype.dragoverHandler = function(e) {
 Dragon.prototype.dropHandler = function(e) {
   e.stopPropagation();
   e.preventDefault();
+  this.layer.classList.remove('dotted');
 
 	// e.dataTransfer.items[0].getAsString(function(url){
  //        alert(url);
@@ -60,11 +62,6 @@ Dragon.prototype.addDataFile = function(html) {
 	wrapper.innerHTML = html;
 	element = wrapper.firstChild;
 
-	// fragment = document.createDocumentFragment();
-	// fragment.appendChild(node);
-
-	// console.log(fragment);
-
 	switch(tagName) {
 		case 'img':
 			dataFile.link = element.getAttribute('src');
@@ -73,8 +70,7 @@ Dragon.prototype.addDataFile = function(html) {
 		case 'a':
 			dataFile.link = element.getAttribute('href');
 			break;
-		case 'span':
-		case 'p':
+		default:
 			dataFile.content = element.textContent;
 			break;
 
